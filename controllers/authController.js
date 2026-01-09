@@ -70,3 +70,61 @@ export async function registerUser(req, res) {
 
   }
 }
+
+export async function loginUser(req, res) {
+
+  let { username, password } = req.body
+  const regex = /^[a-zA-Z0-9_-]{1,20}$/;
+
+  
+  // Validat registeration input
+  if(!username || !password) {
+    return res.status(400).json({
+      error: "All fields are required"
+    })
+  }
+
+  username = username.trim()
+
+  if(!regex.test(username)) {
+    return res.status(400).json({
+      error: 'Username must be 1–20 characters, using letters, numbers, _ or -.'
+    })
+  }
+
+  try {
+    const db = await dbConnection();
+
+    const validateUser = await db.get(`
+      SELECT id, username, password FROM users
+      WHERE username = ?
+    `, [username])
+
+    if(!validateUser) {
+      return res.status(400).json({
+        error: "Invalid credentials"
+      })
+    }
+
+    const comparePassword = await bcrypt.compare(password, validateUser.password)
+    
+    if(!comparePassword) {
+      return res.status(400).json({
+        error: "Invalid credentials"
+      })
+    }
+
+    req.session.userId = validateUser.id;
+
+    return res.status(201).json({
+      message: "Logged in"
+    })
+
+
+  } catch (err) {
+    console.error('Login error:', err.message)
+    res.status(500).json({ 
+      error: 'Login failed. Please try again.' 
+    })
+  }
+}
