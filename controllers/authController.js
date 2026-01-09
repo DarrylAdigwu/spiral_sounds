@@ -1,11 +1,13 @@
 import validator from "validator";
 import { dbConnection } from "../db/db.js";
+import bcrypt from "bcryptjs";
 
 export async function registerUser(req, res) {
-  console.log(req.body)
+ 
   let { name, email, username, password } = req.body
   const regex = /^[a-zA-Z0-9_-]{1,20}$/;
 
+  
   // Validat registeration input
   if(!name || !email || !username || !password) {
     return res.status(400).json({
@@ -44,12 +46,16 @@ export async function registerUser(req, res) {
       })
     }
 
-    await db.all(`
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const result = await db.run(`
       INSERT INTO users (
       name, email, username, password)
       VALUES(?, ?, ?, ?)
-    `, [name, email, username, password])
+    `, [name, email, username, hashedPassword])
 
+    req.session.userId = result.lastID;
     return res.status(201).json({
       message: "User registered."
     })
