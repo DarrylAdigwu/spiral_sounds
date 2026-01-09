@@ -10,7 +10,7 @@ async function viewAllProducts() {
   });
 
   try {
-    const products = await db.all(`SELECT * FROM products`)
+    const products = await db.all(`SELECT DISTINCT genre FROM products`)
     console.table(products)
   } catch (err) {
     console.error('Error fetching products:', err.message)
