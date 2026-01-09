@@ -10,7 +10,7 @@ async function viewAllProducts() {
   });
 
   try {
-    const products = await db.all(`SELECT * FROM products WHERE CONCAT (title, artist, genre) LIKE '%lo%'`)
+    const products = await db.all(`SELECT * FROM users`)
     console.table(products)
   } catch (err) {
     console.error('Error fetching products:', err.message)
