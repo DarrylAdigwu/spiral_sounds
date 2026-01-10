@@ -128,3 +128,22 @@ export async function loginUser(req, res) {
     })
   }
 }
+
+export async function logoutUser(req, res) {
+  if(req.session.userId) {
+    req.session.destroy(err => {
+      if(err) {
+        console.error(err.message)
+        return res.status(400).json({
+          message: "User was not logged out"
+        })
+      } else {
+        res.status(201).json({
+          message: "Logged out"
+        })
+      }
+    });
+  } else {
+    res.end()
+  }
+}
