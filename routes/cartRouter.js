@@ -1,19 +1,20 @@
 import express from "express";
 import { addToCart, getAll, getCartCount, deleteItem, deleteAll} from "../controllers/cartController.js";
+import { requireAuth } from "../middleware/requireAuth.js";
 
 export const cartRouter = express.Router();
 
 cartRouter.route("/add")
-.post(addToCart)
+.post(requireAuth, addToCart)
 
 cartRouter.route("/cart-count")
-  .get(getCartCount)
+  .get(requireAuth, getCartCount)
 
 cartRouter.route("/")
-  .get(getAll)
+  .get(requireAuth, getAll)
 
   cartRouter.route("/all")
-    .delete(deleteAll)
+    .delete(requireAuth, deleteAll)
     
 cartRouter.route("/:itemId")
-  .delete(deleteItem)
+  .delete(requireAuth, deleteItem)

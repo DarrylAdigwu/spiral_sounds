@@ -2,10 +2,6 @@ import { dbConnection } from "../db/db.js"
 
 export async function getAll(req, res){
 
-  if (!req.session.userId) {
-    return res.json({err: 'not logged in'})
-  }
-
   const db = await dbConnection();
 
   try {
@@ -27,11 +23,6 @@ export async function getAll(req, res){
 }
 
 export async function addToCart(req, res){
-  if(!req.session.userId) {
-    return res.status(401).json({
-      message: "Not logged in"
-    })
-  }
 
   const productId = parseInt(req.body.productId, 10)
 
@@ -73,11 +64,6 @@ export async function addToCart(req, res){
 
 
 export async function getCartCount(req, res){
-  if(!req.session.userId) {
-    return res.status(401).json({
-      error: "Not logged in"
-    })
-  }
   const db = await dbConnection();
 
   try {
@@ -101,11 +87,6 @@ export async function getCartCount(req, res){
 
 
 export async function deleteAll(req, res){
-  if(!req.session.userId) {
-    return res.status(401).json({
-      message: "Not logged in"
-    })
-  }
 
   const db = await dbConnection();
 
@@ -122,11 +103,6 @@ export async function deleteAll(req, res){
 }
 
 export async function deleteItem(req, res){
-  if(!req.session.userId) {
-    return res.status(401).json({
-      message: "Not logged in"
-    })
-  }
 
   const itemId = req.params.itemId;
 
