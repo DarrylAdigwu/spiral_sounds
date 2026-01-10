@@ -2,7 +2,7 @@ import { logout } from './logout.js'
 import { checkAuth, renderGreeting, showHideMenuItems } from './authUI.js'
 import { getProducts, populateGenreSelect } from './productService.js'
 import { renderProducts, applySearchFilter } from './productUI.js'
-import { updateCartIcon } from './cartService.js';
+import { updateCartIcon } from './cartService.js'
 
 document.getElementById('logout-btn').addEventListener('click', logout)
 
@@ -11,13 +11,13 @@ document.getElementById('logout-btn').addEventListener('click', logout)
 async function init() {
   populateGenreSelect()
   const products = await getProducts()
-  const username = await checkAuth()
-  renderGreeting(username)
+  const name = await checkAuth()
+  renderGreeting(name)
   renderProducts(products)
-  // showHideMenuItems(username)
-  // if (username) {
-  //   await updateCartIcon()
-  // }
+  showHideMenuItems(name)
+  if (name) {
+    await updateCartIcon()
+  }
 }
 
 init()

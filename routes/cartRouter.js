@@ -1,7 +1,19 @@
 import express from "express";
-import { addToCart } from "../controllers/cartController.js";
+import { addToCart, getAll, getCartCount, deleteItem, deleteAll} from "../controllers/cartController.js";
 
-export const cartRotuer = express.Router();
+export const cartRouter = express.Router();
 
-cartRotuer.route("/add")
+cartRouter.route("/add")
 .post(addToCart)
+
+cartRouter.route("/cart-count")
+  .get(getCartCount)
+
+cartRouter.route("/")
+  .get(getAll)
+
+  cartRouter.route("/all")
+    .delete(deleteAll)
+    
+cartRouter.route("/:itemId")
+  .delete(deleteItem)
