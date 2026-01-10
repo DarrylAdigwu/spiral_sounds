@@ -10,7 +10,7 @@ async function createTable() {
 
   try {
     await db.exec(`
-      CREATE TABLE users (
+      CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         email TEXT UNIQUE NOT NULL,
@@ -19,6 +19,17 @@ async function createTable() {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
         `)
+
+      await db.exec(`
+        CREATE TABLE cart_items (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER NOT NULL,
+          product_id INTEGER NOT NULL,
+          quantity INTEGER NOT NULL DEFAULT 1,
+          FOREIGN KEY (user_id) REFERENCES users(id),
+          FOREIGN KEY (product_id) REFERENCES products(id)
+        )
+     `)
   } catch (err) {
     console.error(err)
   } finally {

@@ -10,8 +10,7 @@ async function viewAllProducts() {
   });
 
   try {
-    const products = await db.all(`
-      SELECT * FROM users`)
+    const products = await db.all(`SELECT * FROM cart_items`)
     console.table(products)
   } catch (err) {
     console.error('Error fetching products:', err.message)

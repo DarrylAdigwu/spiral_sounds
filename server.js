@@ -2,6 +2,7 @@ import express from "express";
 import { productsRouter } from "./routes/products.js";
 import { authRouter } from "./routes/auth.js";
 import { meRouter } from "./routes/me.js";
+import { cartRotuer } from "./routes/cartRouter.js";
 import session from "express-session";
 import dotenv from "dotenv";
 
@@ -30,6 +31,8 @@ app.use("/api/products", productsRouter);
 app.use("/api/auth/me", meRouter);
 
 app.use("/api/auth", authRouter);
+
+app.use("/api/cart", cartRotuer);
 
 app.use((req, res) => {
   res.status(404).json({
